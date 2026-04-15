@@ -13,7 +13,6 @@
       color: white;
     }
 
-    /* OUTER CENTERING */
     #stage {
       width: 100%;
       height: 100%;
@@ -22,7 +21,6 @@
       align-items: center;
     }
 
-    /* SCALE WRAPPER */
     #card {
       width: 700px;
       transform-origin: center;
@@ -66,6 +64,8 @@
     #daysLabel {
       font-size: 11px;
       opacity: 0.8;
+      text-align: center;
+      margin-top: 2px;
     }
 
     #time {
@@ -73,6 +73,7 @@
       margin: 0;
     }
 
+    /* BAR WRAPPER */
     #barContainer {
       width: 60%;
       height: 15px;
@@ -82,10 +83,36 @@
       position: relative;
     }
 
+    /* PROGRESS FILL */
     #bar {
       height: 100%;
       width: 0%;
       background: white;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 🔥 SHIMMER ANIMATION LAYER */
+    #barContainer::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -60%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+      );
+      animation: shimmer 2.2s infinite;
+      z-index: 2;
+    }
+
+    @keyframes shimmer {
+      0% { left: -60%; }
+      100% { left: 120%; }
     }
   </style>
 </head>
@@ -101,7 +128,13 @@
       <div id="title">Go-Live</div>
 
       <div id="metrics">
-        <div>
+
+        <div style="
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          text-align:center;
+        ">
           <div id="days">0</div>
           <div id="daysLabel">Days Remaining</div>
         </div>
@@ -109,6 +142,7 @@
         <div>
           <div id="time">0h 0m 0s</div>
         </div>
+
       </div>
 
       <div id="barContainer">
