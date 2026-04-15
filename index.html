@@ -8,57 +8,65 @@
       margin: 0;
       padding: 0;
       background: #254d49;
-      font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
       height: 100%;
+      overflow: hidden;
+      font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
       color: white;
     }
 
-    #wrapper {
-      height: 100vh;
+    /* 🟢 OUTER CONTAINER (auto scales) */
+    #scaleWrap {
       width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 🟢 FIXED DESIGN CANVAS */
+    #wrapper {
+      width: 900px;
+      height: 500px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 2.5vh;
+      gap: 25px;
       text-align: center;
-      padding: 0 5vw;
-      box-sizing: border-box;
+
+      transform-origin: center;
     }
 
-    /* 🟢 AUTO SCALING TEXT */
     #title {
-      font-size: clamp(20px, 2.5vw, 36px);
+      font-size: 36px;
       font-weight: 600;
-      letter-spacing: 0.15em;
+      letter-spacing: 2px;
     }
 
     #daysNumber {
-      font-size: clamp(50px, 10vw, 90px);
+      font-size: 90px;
       font-weight: bold;
       line-height: 1;
     }
 
     #daysLabel {
-      font-size: clamp(12px, 1.8vw, 16px);
+      font-size: 16px;
       opacity: 0.8;
-      letter-spacing: 0.2em;
+      letter-spacing: 3px;
     }
 
     #timeBlock {
-      font-size: clamp(18px, 3vw, 28px);
+      font-size: 28px;
       opacity: 0.9;
     }
 
-    /* BAR */
     #barWrapper {
-      width: 100%;
-      max-width: 900px;
-      margin-top: 1vh;
+      width: 80%;
+      max-width: 700px;
     }
 
     #barContainer {
-      height: clamp(14px, 2vw, 20px);
+      height: 20px;
       border: 2px solid white;
       border-radius: 10px;
       padding: 2px;
@@ -77,28 +85,41 @@
 
 <body>
 
-<div id="wrapper">
+<div id="scaleWrap">
+  <div id="wrapper">
 
-  <div id="title">Go Live</div>
+    <div id="title">Go Live</div>
 
-  <div>
-    <div id="daysNumber">0</div>
-    <div id="daysLabel">Days Remaining</div>
-  </div>
-
-  <div id="timeBlock">0h 0m 0s</div>
-
-  <div id="barWrapper">
-    <div id="barContainer">
-      <div id="bar"></div>
+    <div>
+      <div id="daysNumber">0</div>
+      <div id="daysLabel">Days Remaining</div>
     </div>
-  </div>
 
+    <div id="timeBlock">0h 0m 0s</div>
+
+    <div id="barWrapper">
+      <div id="barContainer">
+        <div id="bar"></div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <script>
   const startDate = new Date("2026-01-01T00:00:00").getTime();
   const endDate = new Date("2026-09-20T08:00:00").getTime();
+
+  function scaleToFit() {
+    const wrapper = document.getElementById("wrapper");
+
+    const scaleX = window.innerWidth / 900;
+    const scaleY = window.innerHeight / 500;
+
+    const scale = Math.min(scaleX, scaleY);
+
+    wrapper.style.transform = `scale(${scale})`;
+  }
 
   function update() {
     const now = new Date().getTime();
@@ -126,6 +147,9 @@
       now <= startDate ? "0%" : progress + "%";
   }
 
+  window.addEventListener("resize", scaleToFit);
+
+  scaleToFit();
   update();
   setInterval(update, 1000);
 </script>
