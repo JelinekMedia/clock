@@ -1,42 +1,132 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Clock</title>
+  <title>Go Live Countdown</title>
+
   <style>
     html, body {
-      background: transparent;
       margin: 0;
       padding: 0;
+      background: #254d49;
+      font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
       height: 100%;
-      overflow: hidden;
-      font-family: Courier New;
+      color: white;
     }
 
-    #clock {
-      color: #00ffcc;
-      font-size: 60px;
+    #wrapper {
+      height: 100vh;
+      width: 100vw;              /* ✅ fill full iframe width */
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      gap: 25px;
+      text-align: center;
+      padding: 0 20px;           /* ✅ prevents edge clipping */
+      box-sizing: border-box;
+    }
+
+    #title {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: 2px;
+    }
+
+    #daysNumber {
+      font-size: 80px;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    #daysLabel {
+      font-size: 16px;
+      opacity: 0.8;
+      letter-spacing: 3px;
+    }
+
+    #timeBlock {
+      font-size: 28px;
+      opacity: 0.9;
+    }
+
+    /* BAR */
+    #barWrapper {
+      width: 100%;          /* ✅ full usable width */
+      max-width: 900px;     /* optional cap for large screens */
+      margin-top: 10px;
+    }
+
+    #barContainer {
+      height: 20px;
+      border: 2px solid white;
+      border-radius: 10px;
+      padding: 2px;
+      overflow: hidden;
+    }
+
+    #bar {
+      height: 100%;
+      width: 0%;
+      background: white;
+      border-radius: 6px;
+      transition: width 0.5s linear;
     }
   </style>
 </head>
+
 <body>
 
-<div id="clock"></div>
+<div id="wrapper">
+
+  <div id="title">Go Live</div>
+
+  <div>
+    <div id="daysNumber">0</div>
+    <div id="daysLabel">Days Remaining</div>
+  </div>
+
+  <div id="timeBlock">0h 0m 0s</div>
+
+  <div id="barWrapper">
+    <div id="barContainer">
+      <div id="bar"></div>
+    </div>
+  </div>
+
+</div>
 
 <script>
-function updateClock() {
-  const now = new Date();
-  let h = now.getHours().toString().padStart(2,'0');
-  let m = now.getMinutes().toString().padStart(2,'0');
-  let s = now.getSeconds().toString().padStart(2,'0');
-  document.getElementById('clock').textContent = `${h}:${m}:${s}`;
-}
+  const startDate = new Date("2026-01-01T00:00:00").getTime();
+  const endDate = new Date("2026-09-20T08:00:00").getTime();
 
-setInterval(updateClock, 1000);
-updateClock();
+  function update() {
+    const now = new Date().getTime();
+    const remaining = endDate - now;
+
+    if (remaining <= 0) {
+      document.getElementById("daysNumber").innerText = "0";
+      document.getElementById("timeBlock").innerText = "0h 0m 0s";
+      document.getElementById("bar").style.width = "100%";
+      return;
+    }
+
+    const days = Math.floor(remaining / 86400000);
+    const hours = Math.floor((remaining / 3600000) % 24);
+    const minutes = Math.floor((remaining / 60000) % 60);
+    const seconds = Math.floor((remaining / 1000) % 60);
+
+    document.getElementById("daysNumber").innerText = days;
+    document.getElementById("timeBlock").innerText =
+      `${hours}h ${minutes}m ${seconds}s`;
+
+    const progress = ((now - startDate) / (endDate - startDate)) * 100;
+
+    document.getElementById("bar").style.width =
+      now <= startDate ? "0%" : progress + "%";
+  }
+
+  update();
+  setInterval(update, 1000);
 </script>
 
 </body>
