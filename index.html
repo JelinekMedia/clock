@@ -9,32 +9,42 @@
       padding: 0;
       height: 100%;
       width: 100%;
-      background: #254d49;
+      background: transparent; /* important for SharePoint */
       font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
       color: white;
-      overflow: hidden;
     }
 
-    #wrapper {
-      width: 100%;
+    /* OUTER CENTERING ONLY */
+    #stage {
       height: 100%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* 🔥 THIS is now your visible card */
+    #card {
+      width: 95%;
+      height: 95%;
+
+      background: #254d49;
+
+      border-radius: 20px;
+      border: 2px solid white;
+
+      box-sizing: border-box;
+      padding: 10px;
 
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
 
-      box-sizing: border-box;
-      padding: 10px;
       gap: 14px;
       text-align: center;
 
-      /* 🔥 Rounded frame */
-      border-radius: 20px;
       overflow: hidden;
-
-      /* 🔥 WHITE STROKE BORDER */
-      border: 2px solid white;
     }
 
     #title {
@@ -100,7 +110,6 @@
       z-index: 1;
     }
 
-    /* shimmer */
     #barContainer::after {
       content: "";
       position: absolute;
@@ -127,27 +136,31 @@
 
 <body>
 
-<div id="wrapper">
+<div id="stage">
 
-  <div id="title">Go-Live</div>
+  <div id="card">
 
-  <div id="metrics">
+    <div id="title">Go-Live</div>
 
-    <div id="daysBlock">
-      <div id="days">0</div>
-      <div id="daysLabel">Days Remaining</div>
+    <div id="metrics">
+
+      <div id="daysBlock">
+        <div id="days">0</div>
+        <div id="daysLabel">Days Remaining</div>
+      </div>
+
+      <div id="timeBlock">
+        <div id="time">0h 0m 0s</div>
+      </div>
+
     </div>
 
-    <div id="timeBlock">
-      <div id="time">0h 0m 0s</div>
+    <div id="barWrapper">
+      <div id="barContainer">
+        <div id="bar"></div>
+      </div>
     </div>
 
-  </div>
-
-  <div id="barWrapper">
-    <div id="barContainer">
-      <div id="bar"></div>
-    </div>
   </div>
 
 </div>
