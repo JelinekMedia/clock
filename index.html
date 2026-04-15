@@ -8,61 +8,52 @@
       margin: 0;
       padding: 0;
       height: 100%;
-      width: 100%;
-      background: transparent; /* important for SharePoint */
+      background: transparent;
       font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
       color: white;
     }
 
-    /* OUTER CENTERING ONLY */
+    /* OUTER CENTERING */
     #stage {
-      height: 100%;
       width: 100%;
+      height: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
     }
 
-    /* 🔥 THIS is now your visible card */
+    /* SCALE WRAPPER */
     #card {
-      width: 95%;
-      height: 95%;
+      width: 700px;
+      transform-origin: center;
+    }
 
+    #inner {
       background: #254d49;
-
       border-radius: 20px;
       border: 2px solid white;
 
-      box-sizing: border-box;
       padding: 10px;
+      box-sizing: border-box;
 
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
 
-      gap: 14px;
-      text-align: center;
-
-      overflow: hidden;
+      gap: 10px;
     }
 
     #title {
       font-size: 40px;
       font-weight: 600;
-      letter-spacing: 2px;
       margin: 0;
     }
 
     #metrics {
       display: flex;
-      justify-content: center;
-      align-items: center;
       gap: 30px;
-    }
-
-    #daysBlock, #timeBlock {
-      text-align: center;
+      align-items: center;
     }
 
     #days {
@@ -75,61 +66,26 @@
     #daysLabel {
       font-size: 11px;
       opacity: 0.8;
-      margin-top: 2px;
     }
 
     #time {
       font-size: 28px;
-      font-weight: 400;
       margin: 0;
     }
 
-    #barWrapper {
-      width: 60%;
-      max-width: 700px;
-    }
-
     #barContainer {
-      width: 100%;
+      width: 60%;
       height: 15px;
       border: 1px solid white;
       border-radius: 6px;
-      padding: 1px;
-      box-sizing: border-box;
-      position: relative;
       overflow: hidden;
+      position: relative;
     }
 
     #bar {
       height: 100%;
       width: 0%;
       background: white;
-      border-radius: 5px;
-      transition: width 0.5s linear;
-      position: relative;
-      z-index: 1;
-    }
-
-    #barContainer::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -60%;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(
-        120deg,
-        transparent,
-        rgba(255,255,255,0.35),
-        transparent
-      );
-      animation: shimmer 2.5s infinite;
-      z-index: 2;
-    }
-
-    @keyframes shimmer {
-      0% { left: -60%; }
-      100% { left: 120%; }
     }
   </style>
 </head>
@@ -140,25 +96,25 @@
 
   <div id="card">
 
-    <div id="title">Go-Live</div>
+    <div id="inner">
 
-    <div id="metrics">
+      <div id="title">Go-Live</div>
 
-      <div id="daysBlock">
-        <div id="days">0</div>
-        <div id="daysLabel">Days Remaining</div>
+      <div id="metrics">
+        <div>
+          <div id="days">0</div>
+          <div id="daysLabel">Days Remaining</div>
+        </div>
+
+        <div>
+          <div id="time">0h 0m 0s</div>
+        </div>
       </div>
 
-      <div id="timeBlock">
-        <div id="time">0h 0m 0s</div>
-      </div>
-
-    </div>
-
-    <div id="barWrapper">
       <div id="barContainer">
         <div id="bar"></div>
       </div>
+
     </div>
 
   </div>
@@ -166,21 +122,14 @@
 </div>
 
 <script>
-  const startDate = new Date("2026-01-01T00:00:00").getTime();
+  const startDate = new Date("2026-01-01").getTime();
   const endDate = new Date("2026-09-20T08:00:00").getTime();
 
-  function updateCountdown() {
-    const now = new Date().getTime();
+  function update() {
+    const now = Date.now();
     const remaining = endDate - now;
 
-    if (remaining <= 0) {
-      document.getElementById("days").innerText = "0";
-      document.getElementById("time").innerText = "0h 0m 0s";
-      document.getElementById("bar").style.width = "100%";
-      return;
-    }
-
-    const days = Math.floor(remaining / 86400000);
+    const days = Math.max(0, Math.floor(remaining / 86400000));
     const hours = Math.floor((remaining / 3600000) % 24);
     const minutes = Math.floor((remaining / 60000) % 60);
     const seconds = Math.floor((remaining / 1000) % 60);
@@ -190,13 +139,12 @@
       hours + "h " + minutes + "m " + seconds + "s";
 
     const progress = ((now - startDate) / (endDate - startDate)) * 100;
-
     document.getElementById("bar").style.width =
-      now <= startDate ? "0%" : progress + "%";
+      Math.max(0, Math.min(100, progress)) + "%";
   }
 
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+  update();
+  setInterval(update, 1000);
 </script>
 
 </body>
