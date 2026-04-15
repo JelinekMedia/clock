@@ -18,25 +18,29 @@
     #wrapper {
       width: 300px;
       height: 175px;
+
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: center;   /* TRUE CENTER */
       align-items: center;
-      gap: 4px;
+
       text-align: center;
       box-sizing: border-box;
-      padding: 6px;
+      padding: 0;
     }
 
     #title {
       font-size: 14px;
       font-weight: 600;
       letter-spacing: 1px;
+      margin: 0;
+      line-height: 1.1;
     }
 
     #days {
       font-size: 34px;
       font-weight: bold;
+      margin: 0;
       line-height: 1;
     }
 
@@ -44,11 +48,15 @@
       font-size: 9px;
       opacity: 0.8;
       letter-spacing: 1px;
+      margin: 0;
+      line-height: 1.1;
     }
 
     #time {
       font-size: 12px;
       opacity: 0.9;
+      margin: 0;
+      line-height: 1.1;
     }
 
     #barContainer {
@@ -58,6 +66,7 @@
       border-radius: 6px;
       padding: 1px;
       box-sizing: border-box;
+      margin-top: 4px;
     }
 
     #bar {
@@ -76,10 +85,9 @@
 
   <div id="title">Go Live</div>
 
-  <div>
-    <div id="days">0</div>
-    <div id="label">Days Remaining</div>
-  </div>
+  <div id="days">0</div>
+
+  <div id="label">Days Remaining</div>
 
   <div id="time">0h 0m 0s</div>
 
