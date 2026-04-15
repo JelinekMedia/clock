@@ -28,6 +28,13 @@
       padding: 10px;
       gap: 14px;
       text-align: center;
+
+      /* 🔥 Rounded frame */
+      border-radius: 20px;
+      overflow: hidden;
+
+      /* 🔥 WHITE STROKE BORDER */
+      border: 2px solid white;
     }
 
     #title {
@@ -67,12 +74,6 @@
       margin: 0;
     }
 
-    #timeLabel {
-      font-size: 11px;
-      opacity: 0.8;
-      margin-top: 2px;
-    }
-
     #barWrapper {
       width: 60%;
       max-width: 700px;
@@ -85,24 +86,21 @@
       border-radius: 6px;
       padding: 1px;
       box-sizing: border-box;
-
       position: relative;
       overflow: hidden;
     }
 
-    /* ACTUAL PROGRESS BAR */
     #bar {
       height: 100%;
       width: 0%;
       background: white;
       border-radius: 5px;
       transition: width 0.5s linear;
-
       position: relative;
       z-index: 1;
     }
 
-    /* 🔥 SHIMMER OVERLAY ANIMATION */
+    /* shimmer */
     #barContainer::after {
       content: "";
       position: absolute;
@@ -121,12 +119,8 @@
     }
 
     @keyframes shimmer {
-      0% {
-        left: -60%;
-      }
-      100% {
-        left: 120%;
-      }
+      0% { left: -60%; }
+      100% { left: 120%; }
     }
   </style>
 </head>
@@ -146,7 +140,6 @@
 
     <div id="timeBlock">
       <div id="time">0h 0m 0s</div>
-      <div id="timeLabel">H M S</div>
     </div>
 
   </div>
