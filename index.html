@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Go Live Countdown</title>
+  <title>Go-Live Countdown</title>
 
   <style>
     html, body {
@@ -24,54 +24,109 @@
       justify-content: center;
       align-items: center;
 
-      text-align: center;
       box-sizing: border-box;
-      padding: 8px;
+      padding: 10px;
+      gap: 14px;
+      text-align: center;
     }
 
     #title {
-      font-size: clamp(12px, 2vw, 16px);
+      font-size: 40px;
       font-weight: 600;
-      letter-spacing: 1px;
+      letter-spacing: 2px;
       margin: 0;
+    }
+
+    #metrics {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
+
+    #daysBlock, #timeBlock {
+      text-align: center;
     }
 
     #days {
-      font-size: clamp(28px, 6vw, 40px);
+      font-size: 64px;
       font-weight: bold;
-      margin: 0;
       line-height: 1;
+      margin: 0;
     }
 
-    #label {
-      font-size: clamp(8px, 1.5vw, 11px);
+    #daysLabel {
+      font-size: 11px;
       opacity: 0.8;
-      margin: 0;
+      margin-top: 2px;
     }
 
     #time {
-      font-size: clamp(10px, 2vw, 14px);
-      opacity: 0.9;
+      font-size: 28px;
+      font-weight: 400;
       margin: 0;
     }
 
-    #barContainer {
-      width: 90%;
+    #timeLabel {
+      font-size: 11px;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    #barWrapper {
+      width: 60%;
       max-width: 700px;
-      height: 10px;
+    }
+
+    #barContainer {
+      width: 100%;
+      height: 15px;
       border: 1px solid white;
       border-radius: 6px;
       padding: 1px;
       box-sizing: border-box;
-      margin-top: 6px;
+
+      position: relative;
+      overflow: hidden;
     }
 
+    /* ACTUAL PROGRESS BAR */
     #bar {
       height: 100%;
       width: 0%;
       background: white;
       border-radius: 5px;
       transition: width 0.5s linear;
+
+      position: relative;
+      z-index: 1;
+    }
+
+    /* 🔥 SHIMMER OVERLAY ANIMATION */
+    #barContainer::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -60%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+      );
+      animation: shimmer 2.5s infinite;
+      z-index: 2;
+    }
+
+    @keyframes shimmer {
+      0% {
+        left: -60%;
+      }
+      100% {
+        left: 120%;
+      }
     }
   </style>
 </head>
@@ -80,16 +135,26 @@
 
 <div id="wrapper">
 
-  <div id="title">Go Live</div>
+  <div id="title">Go-Live</div>
 
-  <div id="days">0</div>
+  <div id="metrics">
 
-  <div id="label">Days Remaining</div>
+    <div id="daysBlock">
+      <div id="days">0</div>
+      <div id="daysLabel">Days Remaining</div>
+    </div>
 
-  <div id="time">0h 0m 0s</div>
+    <div id="timeBlock">
+      <div id="time">0h 0m 0s</div>
+      <div id="timeLabel">H M S</div>
+    </div>
 
-  <div id="barContainer">
-    <div id="bar"></div>
+  </div>
+
+  <div id="barWrapper">
+    <div id="barContainer">
+      <div id="bar"></div>
+    </div>
   </div>
 
 </div>
