@@ -4,73 +4,58 @@
   <title>Go Live Countdown</title>
 
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
       background: #254d49;
-      height: 100%;
-      overflow: hidden;
       font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
       color: white;
+      overflow: hidden;
     }
 
-    /* 🟢 OUTER CONTAINER (auto scales) */
-    #scaleWrap {
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* 🟢 FIXED DESIGN CANVAS */
     #wrapper {
-      width: 900px;
-      height: 500px;
+      height: 300px;
+      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 25px;
+      gap: 10px;
       text-align: center;
-
-      transform-origin: center;
+      box-sizing: border-box;
+      padding: 10px;
     }
 
     #title {
-      font-size: 36px;
+      font-size: 22px;
       font-weight: 600;
       letter-spacing: 2px;
     }
 
-    #daysNumber {
-      font-size: 90px;
+    #days {
+      font-size: 60px;
       font-weight: bold;
       line-height: 1;
     }
 
-    #daysLabel {
-      font-size: 16px;
+    #label {
+      font-size: 12px;
       opacity: 0.8;
-      letter-spacing: 3px;
+      letter-spacing: 2px;
     }
 
-    #timeBlock {
-      font-size: 28px;
+    #time {
+      font-size: 18px;
       opacity: 0.9;
     }
 
-    #barWrapper {
-      width: 80%;
-      max-width: 700px;
-    }
-
     #barContainer {
-      height: 20px;
+      width: 85%;
+      max-width: 700px;
+      height: 14px;
       border: 2px solid white;
       border-radius: 10px;
       padding: 2px;
-      overflow: hidden;
+      box-sizing: border-box;
     }
 
     #bar {
@@ -85,49 +70,34 @@
 
 <body>
 
-<div id="scaleWrap">
-  <div id="wrapper">
+<div id="wrapper">
 
-    <div id="title">Go Live</div>
+  <div id="title">Go Live</div>
 
-    <div>
-      <div id="daysNumber">0</div>
-      <div id="daysLabel">Days Remaining</div>
-    </div>
-
-    <div id="timeBlock">0h 0m 0s</div>
-
-    <div id="barWrapper">
-      <div id="barContainer">
-        <div id="bar"></div>
-      </div>
-    </div>
-
+  <div>
+    <div id="days">0</div>
+    <div id="label">Days Remaining</div>
   </div>
+
+  <div id="time">0h 0m 0s</div>
+
+  <div id="barContainer">
+    <div id="bar"></div>
+  </div>
+
 </div>
 
 <script>
   const startDate = new Date("2026-01-01T00:00:00").getTime();
   const endDate = new Date("2026-09-20T08:00:00").getTime();
 
-  function scaleToFit() {
-    const wrapper = document.getElementById("wrapper");
-
-    const scaleX = window.innerWidth / 900;
-    const scaleY = window.innerHeight / 500;
-
-    const scale = Math.min(scaleX, scaleY);
-
-    wrapper.style.transform = `scale(${scale})`;
-  }
-
-  function update() {
+  function updateCountdown() {
     const now = new Date().getTime();
     const remaining = endDate - now;
 
     if (remaining <= 0) {
-      document.getElementById("daysNumber").innerText = "0";
-      document.getElementById("timeBlock").innerText = "0h 0m 0s";
+      document.getElementById("days").innerText = "0";
+      document.getElementById("time").innerText = "0h 0m 0s";
       document.getElementById("bar").style.width = "100%";
       return;
     }
@@ -137,9 +107,9 @@
     const minutes = Math.floor((remaining / 60000) % 60);
     const seconds = Math.floor((remaining / 1000) % 60);
 
-    document.getElementById("daysNumber").innerText = days;
-    document.getElementById("timeBlock").innerText =
-      `${hours}h ${minutes}m ${seconds}s`;
+    document.getElementById("days").innerText = days;
+    document.getElementById("time").innerText =
+      hours + "h " + minutes + "m " + seconds + "s";
 
     const progress = ((now - startDate) / (endDate - startDate)) * 100;
 
@@ -147,11 +117,8 @@
       now <= startDate ? "0%" : progress + "%";
   }
 
-  window.addEventListener("resize", scaleToFit);
-
-  scaleToFit();
-  update();
-  setInterval(update, 1000);
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 </script>
 
 </body>
